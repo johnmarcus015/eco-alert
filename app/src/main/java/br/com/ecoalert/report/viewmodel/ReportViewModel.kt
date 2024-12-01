@@ -50,23 +50,23 @@ class ReportViewModel : ViewModel() {
 
     fun validateData(): Boolean {
         if (geographicCoordinate.value.isNullOrEmpty()) {
-            _errorMessage.value = "Geographic coordinate is required"
+            _errorMessage.value = "Coordenada geográfica é obrigatória"
             return false
         }
         if (address.value.isNullOrEmpty()) {
-            _errorMessage.value = "Address is required"
+            _errorMessage.value = "Endereço é obrigatório"
             return false
         }
         if (referencePoints.value.isNullOrEmpty()) {
-            _errorMessage.value = "Reference points are required"
+            _errorMessage.value = "Ponto de referência é obrigatório"
             return false
         }
         if (observation.value.isNullOrEmpty()) {
-            _errorMessage.value = "Observation is required"
+            _errorMessage.value = "Observação é obrigatório"
             return false
         }
         if (photos.value.isNullOrEmpty()) {
-            _errorMessage.value = "At least one photo is required"
+            _errorMessage.value = "Ao menos uma foto é obrigatória"
             return false
         }
         _errorMessage.value = null
@@ -82,10 +82,10 @@ class ReportViewModel : ViewModel() {
             putExtra(
                 Intent.EXTRA_TEXT,
                 """
-                Geographic Coordinate: ${geographicCoordinate.value}
-                Address: ${address.value}
-                Reference Points: ${referencePoints.value}
-                Observation: ${observation.value}
+                Coordenada geográfica: ${geographicCoordinate.value}
+                Endereço: ${address.value}
+                Ponto de referência: ${referencePoints.value}
+                Observação: ${observation.value}
                 """.trimIndent()
             )
         }

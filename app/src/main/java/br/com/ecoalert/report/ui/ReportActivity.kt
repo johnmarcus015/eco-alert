@@ -61,6 +61,11 @@ class ReportActivity : AppCompatActivity() {
         binding.getLocationButton.setOnClickListener { getLocation() }
         binding.addPhotoButton.setOnClickListener { imageCaptureLauncher.launch(null) }
         binding.sendButton.setOnClickListener {
+
+            viewModel.setAddress(binding.addressInput.text.toString())
+            viewModel.setReferencePoints(binding.referenceInput.text.toString())
+            viewModel.setObservation(binding.observationInput.text.toString())
+
             val emailIntent = viewModel.sendEmail()
             emailIntent?.let {
                 startActivity(Intent.createChooser(it, "Send Email"))
