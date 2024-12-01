@@ -1,16 +1,19 @@
 package br.com.ecoalert.report.ui
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.ecoalert.components.LoadingDialog
 import br.com.ecoalert.databinding.ActivityReportBinding
 import br.com.ecoalert.report.viewmodel.ReportViewModel
@@ -20,6 +23,12 @@ class ReportActivity : AppCompatActivity() {
     private lateinit var binding: ActivityReportBinding
     private val viewModel: ReportViewModel by viewModels()
     private lateinit var loadingDialog: LoadingDialog
+    private lateinit var photosAdapter: PhotosAdapter
+
+    private val imageCaptureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            bitmap?.let { viewModel.addPhoto(it) }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +36,21 @@ class ReportActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         loadingDialog = LoadingDialog(this)
+        setupRecyclerView()
         setupObservers()
         setupListeners()
     }
 
+    private fun setupRecyclerView() {
+        photosAdapter = PhotosAdapter()
+        binding.photoRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.photoRecyclerView.adapter = photosAdapter
+    }
+
     private fun setupObservers() {
+        viewModel.photos.observe(this) { photos ->
+            photosAdapter.submitList(photos)
+        }
         viewModel.geographicCoordinate.observe(this) { binding.geographicInput.setText(it) }
         viewModel.errorMessage.observe(this) { message ->
             message?.let { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
@@ -40,6 +59,13 @@ class ReportActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.getLocationButton.setOnClickListener { getLocation() }
+        binding.addPhotoButton.setOnClickListener { imageCaptureLauncher.launch(null) }
+        binding.sendButton.setOnClickListener {
+            val emailIntent = viewModel.sendEmail()
+            emailIntent?.let {
+                startActivity(Intent.createChooser(it, "Send Email"))
+            }
+        }
     }
 
     private fun getLocation() {

@@ -1,25 +1,36 @@
 package br.com.ecoalert.report.ui
 
 import android.graphics.Bitmap
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import br.com.ecoalert.databinding.ItemPhotoBinding
 
-class PhotosAdapter(private val photos: List<Bitmap>) :
-    RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder>() {
+class PhotosAdapter : RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder>() {
 
-    inner class PhotoViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView)
+    private val photos = mutableListOf<Bitmap>()
+
+    fun submitList(newPhotos: List<Bitmap>) {
+        photos.clear()
+        photos.addAll(newPhotos)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val imageView = ImageView(parent.context).apply {
-            layoutParams = ViewGroup.LayoutParams(150, 150)
-        }
-        return PhotoViewHolder(imageView)
+        val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PhotoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.imageView.setImageBitmap(photos[position])
+        holder.bind(photos[position])
     }
 
     override fun getItemCount(): Int = photos.size
+
+    inner class PhotoViewHolder(private val binding: ItemPhotoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(photo: Bitmap) {
+            binding.photoImageView.setImageBitmap(photo)
+        }
+    }
 }
