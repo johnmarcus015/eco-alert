@@ -1,4 +1,4 @@
-package br.com.ecoalert.report.ui
+package br.com.ecoalert.ui.report
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.ecoalert.components.LoadingDialog
 import br.com.ecoalert.databinding.ActivityReportBinding
-import br.com.ecoalert.report.viewmodel.ReportViewModel
 
 class ReportActivity : AppCompatActivity() {
 
@@ -115,5 +114,11 @@ class ReportActivity : AppCompatActivity() {
             },
             null
         )
+    }
+
+    companion object {
+        fun open(context: Context) {
+            context.startActivity(Intent(context, ReportActivity::class.java))
+        }
     }
 }

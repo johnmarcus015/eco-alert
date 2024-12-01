@@ -1,4 +1,4 @@
-package br.com.ecoalert.report.viewmodel
+package br.com.ecoalert.ui.report
 
 import android.content.Intent
 import android.graphics.Bitmap

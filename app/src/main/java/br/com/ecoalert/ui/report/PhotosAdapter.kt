@@ -1,4 +1,4 @@
-package br.com.ecoalert.report.ui
+package br.com.ecoalert.ui.report
 
 import android.graphics.Bitmap
 import android.view.LayoutInflater
