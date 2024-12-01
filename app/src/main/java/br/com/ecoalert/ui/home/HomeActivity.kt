@@ -1,9 +1,6 @@
 package br.com.ecoalert.ui.home
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.ecoalert.R
@@ -26,15 +23,15 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         val menuItems = listOf(
-            MenuItem("Realizar denúncia de queimada", R.drawable.ic_report, ::openReportOptions),
-            MenuItem("Visualizar cartilha educativa", R.drawable.ic_book, ::openEducationalGuide),
+            MenuItem("Denunciar queimada", R.drawable.ic_report, ::openReportOptions),
+            MenuItem("Cartilha educativa", R.drawable.ic_book, ::openEducationalGuide),
             MenuItem(
-                "Visualizar pontos de incêndio no mapa",
+                "Visualizar pontos de incêndio",
                 R.drawable.ic_map,
                 ::viewFirePointsOnMap
             ),
             MenuItem(
-                "Cadastrar dados para notificações na Defesa Civil",
+                "Cadastrar para receber alertas",
                 R.drawable.ic_notification,
                 ::registerNotificationData
             )
@@ -53,7 +50,6 @@ class HomeActivity : AppCompatActivity() {
             { sendEmail() }
         )
 
-        // Show dialog to choose an option
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Opções de Denúncia")
             .setItems(options) { _, which -> actions[which].invoke() }
@@ -63,7 +59,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openEducationalGuide() {
-        BrowserUtils.openWebsite(this, "https://www.gov.br/ibama/pt-br/acesso-a-informacao/perguntas-frequentes/incendios-florestais#participar-campanha")
+        BrowserUtils.openWebsite(
+            this,
+            "https://www.gov.br/ibama/pt-br/acesso-a-informacao/perguntas-frequentes/incendios-florestais#participar-campanha"
+        )
     }
 
     private fun viewFirePointsOnMap() {
