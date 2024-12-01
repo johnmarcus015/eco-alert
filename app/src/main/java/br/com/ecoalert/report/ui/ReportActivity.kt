@@ -1,34 +1,32 @@
 package br.com.ecoalert.report.ui
 
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import br.com.ecoalert.components.LoadingDialog
 import br.com.ecoalert.databinding.ActivityReportBinding
 import br.com.ecoalert.report.viewmodel.ReportViewModel
 
 class ReportActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityReportBinding // Binding for the layout
+    private lateinit var binding: ActivityReportBinding
     private val viewModel: ReportViewModel by viewModels()
-
-    private val imageCaptureLauncher =
-        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let { viewModel.addPhoto(it) }
-        }
+    private lateinit var loadingDialog: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReportBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        loadingDialog = LoadingDialog(this)
         setupObservers()
         setupListeners()
     }
@@ -38,27 +36,10 @@ class ReportActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this) { message ->
             message?.let { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
         }
-        viewModel.photos.observe(this) { photos ->
-            val adapter = PhotosAdapter(photos)
-            binding.photoRecyclerView.adapter = adapter
-        }
     }
 
     private fun setupListeners() {
-        binding.getLocationButton.setOnClickListener {
-            getLocation()
-        }
-
-        binding.addPhotoButton.setOnClickListener {
-            imageCaptureLauncher.launch(null)
-        }
-
-        binding.sendButton.setOnClickListener {
-            val emailIntent = viewModel.sendEmail()
-            emailIntent?.let {
-                startActivity(Intent.createChooser(it, "Send Email"))
-            }
-        }
+        binding.getLocationButton.setOnClickListener { getLocation() }
     }
 
     private fun getLocation() {
@@ -77,12 +58,31 @@ class ReportActivity : AppCompatActivity() {
             return
         }
 
-        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.let { location ->
-            val coordinate = "${location.latitude}, ${location.longitude}"
-            viewModel.setGeographicCoordinate(coordinate)
-        } ?: run {
-            Toast.makeText(this, "Unable to fetch location. Please try again.", Toast.LENGTH_SHORT)
-                .show()
-        }
+        loadingDialog.show("Capturing geolocation...")
+
+        locationManager.requestSingleUpdate(
+            LocationManager.GPS_PROVIDER,
+            object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    val coordinate = "${location.latitude}, ${location.longitude}"
+                    viewModel.setGeographicCoordinate(coordinate)
+                    loadingDialog.dismiss()
+                }
+
+                override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+
+                override fun onProviderEnabled(provider: String) {}
+
+                override fun onProviderDisabled(provider: String) {
+                    loadingDialog.dismiss()
+                    Toast.makeText(
+                        this@ReportActivity,
+                        "Unable to fetch location. GPS is disabled.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            },
+            null
+        )
     }
 }

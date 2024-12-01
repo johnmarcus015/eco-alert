@@ -5,39 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preencha os dados da denúncia"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/geographic_input"
-        android:hint="Geographic Coordinate"
+        android:hint="Coordenadas geográficas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/get_location_button"
-        android:text="Get Location"
+        android:text="Obter localização"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/address_input"
-        android:hint="Address"
+        android:hint="Endereço"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/reference_input"
-        android:hint="Reference Points"
+        android:hint="Ponto de referência"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/observation_input"
-        android:hint="Observation"
+        android:hint="Observação"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/add_photo_button"
-        android:text="Add Photo"
+        android:text="Adicionar foto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -48,7 +56,7 @@
 
     <Button
         android:id="@+id/send_button"
-        android:text="Enviar denuncia"
+        android:text="Enviar denúncia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>
