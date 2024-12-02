@@ -13,11 +13,22 @@
 
         <!-- Button styles -->
         <item name="buttonStyle">@style/Widget.Button.Uber</item>
+        <item name="imageButtonStyle">@style/Widget.ImageButton.Uber</item>
     </style>
 
     <style name="Widget.Button.Uber" parent="Widget.Material3.Button">
         <item name="android:backgroundTint">#000000</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="cornerRadius">24dp</item>
+    </style>
+
+    <style name="Widget.ImageButton.Uber" parent="Widget.AppCompat.ImageButton">
+        <item name="android:backgroundTint">#000000</item>
+        <item name="android:tint">#FFFFFF</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:background">@drawable/shape_rounded_black_background</item>
     </style>
 </resources>

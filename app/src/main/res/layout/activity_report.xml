@@ -1,9 +1,8 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/title"
@@ -15,39 +14,50 @@
 
     <EditText
         android:id="@+id/geographic_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Coordenadas geográficas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:visibility="gone" />
 
-    <Button
-        android:id="@+id/get_location_button"
-        android:text="Obter localização"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/address_input"
-        android:hint="Endereço"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/address_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:hint="Endereço" />
+
+        <ImageButton
+            android:id="@+id/get_location_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="0.8"
+            android:src="@drawable/ic_gps" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/reference_input"
-        android:hint="Ponto de referência"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="Ponto de referência" />
 
     <EditText
         android:id="@+id/observation_input"
-        android:hint="Observação"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="Observação" />
 
     <Button
         android:id="@+id/add_photo_button"
-        android:text="Adicionar foto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Adicionar foto" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photo_recycler_view"
@@ -56,7 +66,7 @@
 
     <Button
         android:id="@+id/send_button"
-        android:text="Enviar denúncia"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Enviar denúncia" />
 </LinearLayout>
